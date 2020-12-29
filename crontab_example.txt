@@ -1,0 +1,2 @@
+* * * * * sh /home/pi/sh/show.sh
+00 * * * * sh /home/pi/sh/tempo.sh

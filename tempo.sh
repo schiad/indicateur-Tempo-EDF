@@ -2,14 +2,15 @@
 #	 https://particulier.edf.fr/bin/edf_rc/servlets/ejptemponew?Date_a_remonter=2020-12-24&TypeAlerte=TEMPO
 
 function tempo {
+	lpath="/home/pi/sh/tempo"
 	DATEJOUR=$(date +%Y-%m-%d --date="$1 days")
 	adresse="https://particulier.edf.fr/bin/edf_rc/servlets/ejptemponew?Date_a_remonter="
 	finadresse="&TypeAlerte=TEMPO"
 	adresse=${adresse}${DATEJOUR}${finadresse}
 
-	if [[ -f "./results/$DATEJOUR.txt" ]];
+	if [[ -f "$lpath/results/$DATEJOUR.txt" ]];
 	then
-		len=$(wc -c ./results/$DATEJOUR.txt | cut -d' ' -f 1)
+		len=$(wc -c $lpath/results/$DATEJOUR.txt | cut -d' ' -f 1)
 	else
 		len=0
 	fi
@@ -19,20 +20,20 @@ function tempo {
 	#echo $adresse
 	if (($len < $max))
 	then
-		wget -O site.txt $adresse 2>> ./tempo.log
+		wget -O site.txt $adresse 2>> $lpath/tempo.log
 	
 		#echo RechercheJour
 		coul_J=$(grep -Po '(?<="JourJ":{"Tempo":")[^"]+(?=")' site.txt)
 		#coul_J1=$(grep -Po '(?<="JourJ1":{"Tempo":")[^"]+(?=")' site.txt)
-		if [[ ! -d ./results ]];
+		if [[ ! -d $lpath/results ]];
 		then
-			mkdir ./results
+			mkdir $lpath/results
 		fi
 		echo -en "$DATEJOUR\t"
-		echo -en "$DATEJOUR\t" > ./results/$DATEJOUR.txt
+		echo -en "$DATEJOUR\t" > $lpath/results/$DATEJOUR.txt
 	
 		echo $coul_J
-		echo $coul_J >> ./results/$DATEJOUR.txt
+		echo $coul_J >> $lpath/results/$DATEJOUR.txt
 		#echo $coul_J1
 	else
 		echo "$DATEJOUR exists."

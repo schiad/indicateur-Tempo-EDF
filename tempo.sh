@@ -2,7 +2,7 @@
 #	 https://particulier.edf.fr/bin/edf_rc/servlets/ejptemponew?Date_a_remonter=2020-12-24&TypeAlerte=TEMPO
 
 function tempo {
-	lpath="/home/pi/sh/tempo"
+	lpath="."
 	DATEJOUR=$(date +%Y-%m-%d --date="$1 days")
 	adresse="https://particulier.edf.fr/bin/edf_rc/servlets/ejptemponew?Date_a_remonter="
 	finadresse="&TypeAlerte=TEMPO"
@@ -33,8 +33,18 @@ function tempo {
 		echo -en "$DATEJOUR\t" > $lpath/results/$DATEJOUR.txt
 	
 		echo $coul_J
-		echo $coul_J >> $lpath/results/$DATEJOUR.txt
-		#echo $coul_J1
+
+		if (($(cat $coul_J | wc -c) < 3))
+		then
+			echo TMP_ND >> $lpath/results/$DATEJOUR.txt
+			if (($1 == 0)) || (($1 == 1))
+			then
+				./rescue_tempo.sh
+			fi
+		else			
+			echo $coul_J >> $lpath/results/$DATEJOUR.txt
+			#echo $coul_J1
+		fi
 	else
 		echo "$DATEJOUR exists."
 	fi

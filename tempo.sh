@@ -21,7 +21,6 @@ function tempo {
 	if (($len < $max))
 	then
 		wget -O site.txt $adresse 2>> $lpath/tempo.log
-	
 		#echo RechercheJour
 		coul_J=$(grep -Po '(?<="JourJ":{"Tempo":")[^"]+(?=")' site.txt)
 		#coul_J1=$(grep -Po '(?<="JourJ1":{"Tempo":")[^"]+(?=")' site.txt)
@@ -34,14 +33,15 @@ function tempo {
 	
 		echo $coul_J
 
-		if (($(cat $coul_J | wc -c) < 3))
+		if (($(echo $coul_J | wc -c) < 3))
 		then
 			echo TMP_ND >> $lpath/results/$DATEJOUR.txt
 			if (($1 == 0)) || (($1 == 1))
 			then
-				./rescue_tempo.sh
+				echo "call rescue tempo."
+				bash ./rescue_tempo.sh
 			fi
-		else			
+		else
 			echo $coul_J >> $lpath/results/$DATEJOUR.txt
 			#echo $coul_J1
 		fi

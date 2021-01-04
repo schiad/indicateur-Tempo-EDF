@@ -14,7 +14,7 @@ function tempo {
 	else
 		len=0
 	fi
-	max=15
+	max=20
 
 	echo "wc $len"
 	#echo $adresse

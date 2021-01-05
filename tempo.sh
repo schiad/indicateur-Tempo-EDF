@@ -39,7 +39,7 @@ function tempo {
 			if (($1 == 0)) || (($1 == 1))
 			then
 				echo "call rescue tempo."
-				bash ./rescue_tempo.sh
+				bash $lpath/rescue_tempo.sh
 			fi
 		else
 			echo $coul_J >> $lpath/results/$DATEJOUR.txt
